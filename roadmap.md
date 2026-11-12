@@ -1,10 +1,12 @@
 # Modulare — etapas
 
-- [ ] Acesso privado por convite, perfis, recuperação de senha e encerramento de sessão.
-- [ ] Pacientes persistentes e agenda com conflitos protegidos no banco.
-- [ ] Atendimento: rascunhos, revisão, versões imutáveis e adendos.
-- [ ] Documentos privados, prévias e originais externos.
-- [ ] Financeiro: títulos, liquidações parciais e estornos.
-- [ ] Painel, configurações e auditoria.
-- [ ] Verificação com contas fictícias e documentação das evidências.
-- [ ] Dependências externas: assinatura digital, mensagens, cobrança eletrônica, nota fiscal e teste de restauração em ambiente separado.
+- [x] Acesso privado por convite, perfis, telas de recuperação e saída; clique no e-mail pelo destinatário ainda não verificado.
+- [x] Núcleo de pacientes persistentes e agenda com conflitos protegidos no banco.
+- [x] Núcleo de atendimento: rascunhos manuais, revisão, versões imutáveis e adendos.
+- [x] Núcleo de documentos privados, prévias PDF e originais externos não verificados.
+- [x] Núcleo financeiro: títulos, liquidações parciais e estornos.
+- [x] Painel, configurações e auditoria inicial.
+- [x] Testes com contas fictícias em clínica separada; registros removidos. Evidências e limitações em VERIFICATION.md.
+- [ ] Dependências externas: assinatura digital, mensagens, cobrança eletrônica e nota fiscal — aguardam serviços oficiais.
+- [ ] Restauração real — aguarda ambiente separado de recuperação e política de backup verificada.
+- [ ] Confirmação de convite/recuperação — aguarda conclusão pelo destinatário.
