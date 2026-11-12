@@ -1,0 +1,3 @@
+import {createFileRoute} from '@tanstack/react-router'
+import {SecondFactor} from '@/components/clinic/second-factor'
+export const Route=createFileRoute('/segundo-fator')({head:()=>({meta:[{title:'Segundo fator obrigatório | Modulare'},{name:'description',content:'Confirmação individual de segundo fator para acesso à clínica Modulare.'},{property:'og:title',content:'Segundo fator obrigatório | Modulare'},{property:'og:description',content:'Proteção do acesso privado da clínica.'},{property:'og:type',content:'website'},{name:'twitter:card',content:'summary'}]}),component:SecondFactor})
