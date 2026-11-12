@@ -1,22 +1,13 @@
 import { createServerFn } from '@tanstack/react-start'
 import { requireSupabaseAuth } from '@/integrations/supabase/auth-middleware'
-export const getClinic = createServerFn({method:'GET'}).middleware([requireSupabaseAuth]).handler(async({context})=>{
- const {data:membership,error} = await context.supabase.from('user_roles').select('*').eq('user_id',context.userId).single()
- if(error || !membership) throw new Error('Esta conta ainda não possui acesso à clínica.')
- const c=membership.clinic_id
- const [clinic,patients,appointments,titles,settlements,reversals,encounters,documents,addenda,services] = await Promise.all([
- context.supabase.from('clinics').select('*').eq('id',c).single(),
- context.supabase.from('patients').select('*').eq('clinic_id',c).order('name').limit(1000),
- context.supabase.from('appointments').select('*').eq('clinic_id',c).order('starts_at').limit(1000),
- context.supabase.from('financial_titles').select('*').eq('clinic_id',c).limit(1000),
- context.supabase.from('settlements').select('*').eq('clinic_id',c).limit(1000),
- context.supabase.from('reversals').select('*').eq('clinic_id',c).limit(1000),
- context.supabase.from('encounters').select('*').eq('clinic_id',c).order('created_at',{ascending:false}).limit(1000),
- context.supabase.from('documents').select('*').eq('clinic_id',c).order('created_at',{ascending:false}).limit(1000),
- context.supabase.from('addenda').select('*').eq('clinic_id',c).limit(1000),
- context.supabase.from('services').select('*').eq('clinic_id',c).limit(1000)])
- for(const result of [clinic,patients,appointments,titles,settlements,reversals,encounters,documents,addenda,services]) if(result.error) throw new Error('Não foi possível carregar os registros autorizados.')
- if(!clinic.data) throw new Error('Clínica indisponível.')
- return {membership,clinic:clinic.data,patients:patients.data??[],appointments:appointments.data??[],titles:titles.data??[],settlements:settlements.data??[],reversals:reversals.data??[],encounters:encounters.data??[],documents:documents.data??[],addenda:addenda.data??[],services:services.data??[]}
+import {z} from 'zod'
+import {requireAal2} from './clinic-security'
+import type {ClinicData,EncounterBundle,PatientBundle} from './clinic-data'
+import type {Row} from './clinic'
+export type {ClinicData} from './clinic-data'
+export const getClinic = createServerFn({method:'GET'}).middleware([requireSupabaseAuth]).inputValidator(z.object({screen:z.string().optional(),term:z.string().max(200).optional(),active_filter:z.string().optional(),page_number:z.number().int().min(0).optional(),day_value:z.string().optional(),month_value:z.string().optional(),agenda_view:z.string().optional()}).default({})).handler(async({context,data})=>{
+ requireAal2(context.claims['aal']);const r=await context.supabase.rpc('workspace_page',data);if(r.error||!r.data)throw Error('Não foi possível carregar os registros autorizados.');return r.data as unknown as ClinicData
 })
-export type ClinicData = Awaited<ReturnType<typeof getClinic>>
+export const readClinical=createServerFn({method:'POST'}).middleware([requireSupabaseAuth]).inputValidator(z.object({c:z.string().uuid(),entity:z.string().uuid(),mode:z.enum(['encounter','document','patient','export'])})).handler(async({context,data})=>{requireAal2(context.claims['aal']);const r=await context.supabase.rpc('clinical_read',data);if(r.error||!r.data)throw Error('Não foi possível abrir o registro autorizado.');return r.data as unknown as EncounterBundle|PatientBundle|Row<'documents'>})
+export const saveClinical=createServerFn({method:'POST'}).middleware([requireSupabaseAuth]).inputValidator(z.object({c:z.string().uuid(),entity:z.string().uuid(),expected:z.number().int().positive(),body:z.record(z.string()),finalize:z.boolean().default(false)})).handler(async({context,data})=>{requireAal2(context.claims['aal']);const r=await context.supabase.rpc('save_clinical',data);if(r.error||!r.data)throw Error('Não foi possível salvar o atendimento.');return r.data as unknown as {conflict?:boolean;encounter?:Row<'encounters'>}})
+export const searchPatients=createServerFn({method:'POST'}).middleware([requireSupabaseAuth]).inputValidator(z.object({c:z.string().uuid(),term:z.string().max(200),page_number:z.number().int().min(0)})).handler(async({context,data})=>{requireAal2(context.claims['aal']);const r=await context.supabase.rpc('search_patients',data);if(r.error)throw Error('Não foi possível pesquisar pacientes.');return r.data as unknown as Pick<Row<'patients'>,'id'|'name'|'identifier'|'birth_date'|'active'>[]})
