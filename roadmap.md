@@ -1,13 +1,14 @@
 # Modulare — etapas
 
 ## Correções críticas — etapa 1
-- [ ] Plano de migração e impactos — aguarda aprovação antes de alterar o banco.
-- [ ] Agenda: médicos autorizados, conflitos simultâneos e vínculo consistente com atendimento.
-- [ ] Segurança: TOTP obrigatório, AAL2, recuperação/reconfiguração e auditoria protegida.
-- [ ] Prontuário: autosalvamento, avisos de alterações não persistidas, histórico e adendos.
-- [ ] Consultas paginadas no servidor e conteúdo clínico sob demanda.
-- [ ] Exportação integral por paciente com originais e auditoria.
-- [ ] Testes fictícios de interface, concorrência e chamadas diretas; relatório de resultados.
+- [x] Plano de migração e impactos aprovado; alterações aditivas aplicadas.
+- [x] Agenda: médicos autorizados, conflitos simultâneos e vínculo consistente com atendimento.
+- [x] Segurança: TOTP obrigatório, AAL2 e auditoria protegida.
+- [ ] Recuperação/reconfiguração de TOTP — aguarda procedimento administrativo de identidade e validação real; não remover fatores automaticamente.
+- [x] Prontuário: autosalvamento, avisos de alterações não persistidas, histórico e adendos.
+- [x] Consultas paginadas no servidor e conteúdo clínico sob demanda.
+- [x] Exportação integral por paciente com originais e auditoria.
+- [x] Testes fictícios de interface, concorrência e chamadas diretas; relatório em VERIFICATION.md; dados isolados removidos.
 - [ ] Backups: evidência da página de backups e restauração isolada — dependem de acesso ao inventário pelo responsável e ambiente separado.
 
 - [x] Acesso privado por convite, perfis, telas de recuperação e saída; clique no e-mail pelo destinatário ainda não verificado.

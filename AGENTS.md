@@ -34,3 +34,6 @@ use the editor.
 - Load private clinic data through authenticated server functions and query-backed protected routes so request identity is validated.
 - Use database exclusion constraints for appointment conflicts, immutable encounter versions and append-only payment events so direct API calls preserve the same rules as the UI.
 - Keep clinical content out of technical logs and external AI calls; only record metadata in audit events.
+- Enforce AAL2 in private operations and database membership checks; the public second-factor surface must remain reachable for enrollment without exposing records.
+- Use scoped workspace RPCs for pagination and global aggregates, and audited clinical RPCs for full-content reads; column-only metadata grants prevent bypassing read audits.
+- Serialize autosaves with optimistic versions and preserve unsaved text only in memory; patient exports fail closed if any original cannot be downloaded.

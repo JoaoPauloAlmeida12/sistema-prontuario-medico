@@ -1,0 +1,1 @@
+DO $$ DECLARE definition text; BEGIN SELECT pg_get_functiondef('public.clinical_read(uuid,uuid,text)'::regprocedure) INTO definition; definition=replace(definition,'DECLARE p uuid;','DECLARE patient_ref uuid;'); definition=replace(definition,'INTO p FROM','INTO patient_ref FROM'); definition=replace(definition,'IF p IS NULL','IF patient_ref IS NULL'); EXECUTE definition; END $$;
