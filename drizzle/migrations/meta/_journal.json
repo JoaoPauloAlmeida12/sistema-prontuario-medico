@@ -29,6 +29,13 @@
       "when": 1794526288782,
       "tag": "0003_critical_agenda_aal2_audited_reads",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1794526342202,
+      "tag": "0004_scoped_workspace_queries",
+      "breakpoints": true
     }
   ]
 }

@@ -725,6 +725,22 @@ export type Database = {
         }
         Returns: Json
       }
+      search_patients: {
+        Args: { c: string; page_number?: number; term?: string }
+        Returns: Json
+      }
+      workspace_page: {
+        Args: {
+          active_filter?: string
+          agenda_view?: string
+          day_value?: string
+          month_value?: string
+          page_number?: number
+          screen?: string
+          term?: string
+        }
+        Returns: Json
+      }
     }
     Enums: {
       app_role: "doctor" | "reception"
