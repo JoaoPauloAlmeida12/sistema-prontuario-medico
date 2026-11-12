@@ -1,0 +1,7 @@
+import type { ClinicData } from './clinic.functions'
+export function demoData(): ClinicData {
+ const day='2026-11-12'; const clinicId='demo'
+ const patients=([['p1','Mariana Oliveira','1991-04-18'],['p2','Carlos Eduardo Santos','1978-09-23'],['p3','Ana Clara Ferreira','1986-02-06'],['p4','Pedro Henrique Costa','1965-07-14'],['p5','Beatriz Rodrigues','1998-11-02']] as [string,string,string][]).map(([id,name,birth_date],i)=>({id,name,birth_date,clinic_id:clinicId,identifier:`DEMO-00${i+1}`,phone:null,email:null,address:null,guardian:null,active:true,created_at:day}))
+ const appointments=patients.map((p,i)=>({id:`a${i}`,patient_id:p.id,clinic_id:clinicId,professional_id:'demo',service:'Consulta',starts_at:`${day}T${String(9+i).padStart(2,'0')}:00:00-03:00`,ends_at:`${day}T${String(9+i).padStart(2,'0')}:45:00-03:00`,modality:['presencial','teleconsulta','presencial','presencial','domiciliar'][i]??'presencial',status:['realizado','em atendimento','confirmado','agendado','agendado'][i]??'agendado',expected_cents:null,admin_note:'',is_block:false,created_at:day}))
+ return {membership:{id:'demo',user_id:'demo',clinic_id:clinicId,role:'doctor'},clinic:{id:clinicId,name:'Modulare — Gestão da Clínica',is_demo:true,professional_name:null,crm:null,rqe:null,contact:null,address:null,retention_policy:'Sem exclusão automática.'},patients,appointments,titles:[],settlements:[],reversals:[],encounters:[],documents:[],addenda:[],services:[]}
+}

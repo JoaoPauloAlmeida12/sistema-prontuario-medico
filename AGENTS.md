@@ -28,3 +28,9 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+- Keep public demonstration data in browser-safe fixtures, separate from clinic records, so anonymous visitors never read patient data.
+- Clinic membership lives in a service-managed roles table; enforce role and clinic checks through database and private storage policies, not hidden menus.
+- Load private clinic data through authenticated server functions and query-backed protected routes so request identity is validated.
+- Use database exclusion constraints for appointment conflicts, immutable encounter versions and append-only payment events so direct API calls preserve the same rules as the UI.
+- Keep clinical content out of technical logs and external AI calls; only record metadata in audit events.

@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1794496904593,
+      "tag": "0000_clinic_private_core",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1794496966355,
+      "tag": "0001_private_clinical_storage",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794497321000,
+      "tag": "0002_audit_metadata_safe_records",
+      "breakpoints": true
+    }
+  ]
+}
