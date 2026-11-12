@@ -1,5 +1,36 @@
 # Modulare — entrega inicial e verificação
 
+## Correções críticas — 12/11/2026 (substitui as limitações iniciais abaixo quando indicado)
+- Plano aprovado; migrações aditivas preservam registros existentes. Médicos autorizados selecionáveis pela recepção; validação no banco, vínculo único consulta/atendimento e sincronização dos estados.
+- TOTP e AAL2 exigidos no painel, funções privadas e acesso por papel no banco/arquivos. Leitura de conteúdo por operações auditadas; leitura direta de colunas clínicas bloqueada inclusive para médico.
+- Autosalvamento serializado após 900 ms, estado visível, conflito de versão, aviso ao fechar/navegar, texto não persistido apenas em memória. Finalizados imutáveis; adendos separados; finalização não é assinatura.
+- Consultas específicas por tela com páginas de 50 registros e pesquisa de pacientes em páginas de 25; agregações financeiras globais no banco. Conteúdo clínico solicitado somente na abertura e exportação.
+- Anexos por atendimento e ZIP integral por paciente com dados, versões, adendos, documentos, anexos e manifesto dos originais; download incompleto interrompe a exportação.
+
+### Resultados da etapa crítica
+- 8 testes automatizados passaram (regras financeiras/datas, rota pública, AAL2 e alterações não persistidas).
+- 27 verificações de banco/API passaram: AAL1 bloqueado para ambos os papéis; verificação real de TOTP; cadastro administrativo; médico autorizado; exatamente uma reserva simultânea aceita; vínculos/estados; persistência e conflito; recepção bloqueada por leitura auditada e direta; médico sem desvio da auditoria; finalização imutável; arquivo privado; exportação; busca no servidor; eventos sem conteúdo clínico.
+- Navegador com contas fictícias: exportação ZIP baixada e conteúdo/originais conferidos; autosalvamento e texto exato após recarga; recepção agenda para médico; AAL1 redirecionado ao segundo fator. Nenhum erro de execução observado. Demonstração sem excesso horizontal em 890×686 e 390×844.
+- Falhas encontradas e corrigidas: ambiguidade SQL na exportação; seleção de paciente que se perdia durante atualização; formulário de adendo não atualizado imediatamente após finalização. Os testes principais de tela foram repetidos com sucesso. Algumas tentativas do roteiro falharam por seletores de campos/registro incorretos, ajustados sem alterar regras de acesso.
+- Última compilação observada: sem erros. Três clínicas fictícias isoladas, contas e originais criados por este roteiro foram identificados e removidos; nenhum registro da clínica real removido.
+
+### Pendências atuais
+- Recuperação e reconfiguração de TOTP dependem de verificação administrativa de identidade: não há remoção automática nem conclusão ponta a ponta validada. Redefinir senha não elimina o segundo fator. Cadastro/desafio estão implementados; a inscrição TOTP foi exercitada pela API, não integralmente pela tela.
+- Avisos de saída, erro/conflito na tela, histórico completo sob sucessivos autosalvamentos e volumes elevados ainda precisam de testes ampliados; conflitos e imutabilidade foram testados no banco.
+- CSV financeiro existente exporta somente a página carregada; não constitui exportação financeira integral. A exportação clínica por paciente não usa a paginação da tela.
+- Assinaturas e integrações oficiais, recebimento/conclusão de convite e recuperação por e-mail, revisão técnica/regulatória permanecem pendentes. Não há declaração de aptidão para uso clínico real.
+
+### Backup e restauração isolada
+A documentação do Lovable Cloud informa um snapshot diário da estrutura e dos dados, retenção de até aproximadamente 14 dias e ausência de recuperação para um instante arbitrário. Arquivos de armazenamento não são incluídos em snapshots nem na exportação do banco. O inventário real desta clínica não é acessível pelas ferramentas: frequência efetiva, quantidade e último timestamp UTC permanecem não verificados. O responsável deve conferir **More → Database → Manage → Backups** e informar o snapshot mais recente.
+
+1. Preservar o estado atual por **More → Database → Manage → Settings → Export project data → Export data → Database → Export → Start export**; obter o arquivo pelo link enviado ou por Storage. Limites documentados: banco até 15 GB, arquivo até 5 GB, uma exportação a cada 24 horas; backend deve estar ativo.
+2. Baixar os arquivos separadamente em **More → Storage**. A exportação do banco inclui contas e hashes de senha, mas não arquivos, código de funções, segredos ou configurações dos provedores de entrada.
+3. Restaurar o export em um projeto separado controlado pelo responsável, reconfigurar provedores/chaves, repor arquivos e apontar uma cópia de teste da aplicação. Remix não é cópia dos dados. A página Backups restaura apenas o mesmo projeto, não um ambiente novo.
+4. Testar entrada/TOTP, papéis, contagens, consulta vinculada, versão finalizada e adendos, pagamentos/estornos e recuperação dos originais; comparar exportação por paciente e registrar data UTC, evidências e resultados. Nenhuma restauração isolada foi executada nesta etapa.
+5. Não usar **Restore to this backup** em produção para o ensaio: a ação é permanente, perde alterações posteriores ao snapshot, reverte também a estrutura e deixa o banco indisponível por alguns minutos. Exportar antes preserva o estado atual; após uma restauração, validar compatibilidade da aplicação e corrigir diferenças por nova migração.
+
+## Registro histórico da entrega inicial
+
 ## Disponível
 - Demonstração pública somente com dados fictícios em memória, sem gravação; clínica privada vazia em /painel.
 - Entrada com e-mail/senha, convite inicial enviado pelo provedor, página de definição/recuperação de senha, saída com limpeza de cache.
