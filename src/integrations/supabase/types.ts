@@ -160,6 +160,61 @@ export type Database = {
           },
         ]
       }
+      clinical_attachments: {
+        Row: {
+          author_id: string
+          clinic_id: string
+          created_at: string
+          encounter_id: string | null
+          filename: string
+          id: string
+          patient_id: string
+          storage_path: string
+        }
+        Insert: {
+          author_id?: string
+          clinic_id: string
+          created_at?: string
+          encounter_id?: string | null
+          filename: string
+          id?: string
+          patient_id: string
+          storage_path: string
+        }
+        Update: {
+          author_id?: string
+          clinic_id?: string
+          created_at?: string
+          encounter_id?: string | null
+          filename?: string
+          id?: string
+          patient_id?: string
+          storage_path?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "clinical_attachments_clinic_id_encounter_id_fkey"
+            columns: ["clinic_id", "encounter_id"]
+            isOneToOne: false
+            referencedRelation: "encounters"
+            referencedColumns: ["clinic_id", "id"]
+          },
+          {
+            foreignKeyName: "clinical_attachments_clinic_id_fkey"
+            columns: ["clinic_id"]
+            isOneToOne: false
+            referencedRelation: "clinics"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "clinical_attachments_clinic_id_patient_id_fkey"
+            columns: ["clinic_id", "patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["clinic_id", "id"]
+          },
+        ]
+      }
       clinics: {
         Row: {
           address: string | null
@@ -640,6 +695,18 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      audited_file_read: { Args: { path: string }; Returns: boolean }
+      clinic_doctors: {
+        Args: { c: string }
+        Returns: {
+          display_name: string
+          user_id: string
+        }[]
+      }
+      clinical_read: {
+        Args: { c: string; entity: string; mode: string }
+        Returns: Json
+      }
       has_clinic_role: {
         Args: { c: string; medical?: boolean }
         Returns: boolean
@@ -647,6 +714,16 @@ export type Database = {
       record_access: {
         Args: { action: string; c: string; entity: string }
         Returns: undefined
+      }
+      save_clinical: {
+        Args: {
+          body: Json
+          c: string
+          entity: string
+          expected: number
+          finalize?: boolean
+        }
+        Returns: Json
       }
     }
     Enums: {
