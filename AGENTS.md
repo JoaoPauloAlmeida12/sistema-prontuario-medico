@@ -37,3 +37,4 @@ use the editor.
 - Enforce AAL2 in private operations and database membership checks; the public second-factor surface must remain reachable for enrollment without exposing records.
 - Use scoped workspace RPCs for pagination and global aggregates, and audited clinical RPCs for full-content reads; column-only metadata grants prevent bypassing read audits.
 - Serialize autosaves with optimistic versions and preserve unsaved text only in memory; patient exports fail closed if any original cannot be downloaded.
+- Render expandable patient encounter history within the existing workspace from the audited patient bundle; opening an encounter retains the existing audited editor flow so permissions, versions and autosave stay unchanged.
